@@ -1,14 +1,14 @@
 ---
 minecraft_server: minecraft
 minecraft_version: latest
-minecraft_user: "{{ minecraft_server }}"
-minecraft_group: "{{ minecraft_server }}"
+minecraft_user: "minecraft"
+minecraft_group: "minecraft"
 minecraft_basedir: "/opt/minecraft"
 minecraft_home: "{{minecraft_basedir}}/server"
 minecraft_plugins: "{{minecraft_basedir}}/plugins"
 minecraft_max_memory: "{{ (ansible_memtotal_mb * 0.8) | round | int }}m"
 minecraft_initial_memory: "{{ (ansible_memtotal_mb * 0.8) | round | int }}m"
-minecraft_service_name: "{{ minecraft_server }}"
+minecraft_service_name: "minecraft"
 minecraft_supervisor_name: "{{ minecraft_service_name }}"
 minecraft_whitelist: []
 minecraft_ops: []
