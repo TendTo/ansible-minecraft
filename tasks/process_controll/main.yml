@@ -1,3 +1,5 @@
 ---
-
 - include_tasks: systemd/main.yml
+  when: minecraft_service_name is defined and minecraft_service_name != ''
+
+- include_tasks: utility_scripts.yml

@@ -10,6 +10,7 @@
   service:
     name: "{{ minecraft_service_name }}"
     state: restarted
+  when: minecraft_service_name is defined and minecraft_service_name != ''
 
 - name: enable service
   service:
@@ -19,3 +20,4 @@
   with_items:
     - "{{ minecraft_service_name }}.service"
     - "{{ minecraft_service_name }}.socket"
+  when: minecraft_service_name is defined and minecraft_service_name != ''

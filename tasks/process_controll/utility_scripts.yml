@@ -1,0 +1,15 @@
+- name: create a launch script
+  template:
+    src: launch.sh.j2
+    dest: "{{ deploy_helper.shared_path }}/launch.sh"
+    owner: "{{ minecraft_user }}"
+    group: "{{ minecraft_group }}"
+    mode: '0755'
+
+- name: create a backup script
+  template:
+    src: backup.sh.j2
+    dest: "{{ deploy_helper.shared_path }}/backup.sh"
+    owner: "{{ minecraft_user }}"
+    group: "{{ minecraft_group }}"
+    mode: '0755'

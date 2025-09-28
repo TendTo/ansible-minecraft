@@ -1,0 +1,44 @@
+#!/bin/bash
+####################################
+#
+# Backup minecraft world to a
+# specified folder.
+# Optionally upload it to a
+# specified bucket URL.
+#
+# Usage:
+#   ./backup.sh [bucket_url]
+#
+####################################
+
+# Path of the script and the backup destination folder
+script=$(readlink -f "$0")
+loc=$(dirname "$script")
+backup_dest=$loc/backups
+mkdir -p $backup_dest
+bucket_url=$1
+
+# What to backup. Name of minecraft world
+backup_files=('world' 'world_nether' 'world_the_end')
+
+# Create backup archive filename.
+day=$(date +%A)
+archive_file="$day-world.tar.xz"
+
+# Backup the files using tar.
+tar cJvf $backup_dest/$archive_file $loc/${backup_files[0]} $loc/${backup_files[1]} $loc/${backup_files[2]}
+
+if [ $? -ne 0 ]; then
+  echo "Error during backup creation"
+  exit 1
+fi
+
+if [ -z "$bucket_url" ]; then
+  echo "No bucket URL provided, skipping upload"
+  exit 0
+fi
+
+echo 'Uploading files on the Bucket'
+
+# Upload file on Minecraft Bucket
+curl -T $backup_dest/$archive_file $bucket_url
