@@ -1,0 +1,57 @@
+---
+- name: Minecraft setup
+  hosts: minecraft_server
+  roles:
+    - role: nolte.minecraft
+      minecraft_basedir: "/home/minecraft/minecraft"
+      minecraft_version: "{{ minecraft.version }}"
+      minecraft_server: paper
+      minecraft_paper_url: "https://api.papermc.io/v2/projects/paper/versions/{{ minecraft.version }}/builds/{{ minecraft.paper_build }}/downloads/paper-{{ minecraft.version }}-{{ minecraft.paper_build }}.jar"
+      minecraft_service_name: "" # Disable the service file generation
+      minecraft_eula_accept: true
+      minecraft_server_properties:
+        allow-flight: false
+        allow-nether: true
+        broadcast-console-to-ops: true
+        broadcast-rcon-to-ops: true
+        debug: false
+        difficulty: hard
+        enable-status: true
+        enforce-secure-profile: true
+        enforce-whitelist: false
+        force-gamemode: false
+        gamemode: survival
+        generate-structures: true
+        hardcore: false
+        hide-online-players: false
+        level-name: world
+        log-ips: true
+        max-players: 20
+        motd: "Server CDS -- Versione {{ minecraft.version }}"
+        online-mode: false
+        pvp: true
+        region-file-compression: deflate
+        require-resource-pack: false
+        server-port: "{{ minecraft.port }}"
+        spawn-monsters: true
+        spawn-protection: 8
+        sync-chunk-writes: true
+        use-native-transport: true
+        view-distance: 10
+        white-list: false
+
+# Make sure the iptables are set up correctly
+- name: Set up iptables for Minecraft
+  hosts: minecraft_server
+  tasks:
+    - name: Allow Minecraft port in iptables
+      become: true
+      ansible.builtin.iptables:
+        chain: INPUT
+        protocol: tcp
+        destination_port: "{{ minecraft.port }}"
+        jump: ACCEPT
+        action: insert
+        state: present
+        comment: "Allow Minecraft {{ minecraft.version }} server port"
+        ip_version: ipv4

@@ -1,0 +1,12 @@
+all:
+  hosts:
+    minecraft_server:
+      ansible_host: 192.168.1.1 # server's public ip
+      ansible_user: minecraft # server's user used for the ssh login
+      ansible_ssh_private_key_file: ~/.ssh/minecraft.key
+      ansible_become_password: minecraft
+  vars:
+    minecraft:
+      version: "1.21.8"
+      paper_build: 60
+      port: 12345

@@ -1,0 +1,5 @@
+roles:
+  - name: nolte.minecraft
+    version: develop
+    src: https://github.com/TendTo/ansible-minecraft.git
+    scm: git
